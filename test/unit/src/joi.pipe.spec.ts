@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import * as Joi from 'joi';
-import { JoiSchema, JoiSchemaOptions } from 'joi-class-decorators';
+import { JoiSchema, JoiSchemaOptions } from '@cohu-isg/joi-class-decorators';
 
 import { CREATE, JoiPipe, JoiPipeValidationException, UPDATE } from '../../../src';
 

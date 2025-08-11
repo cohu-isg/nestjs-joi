@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { JoiSchema } from 'joi-class-decorators';
+import { JoiSchema } from '@cohu-isg/joi-class-decorators';
 import { fromPairs } from 'lodash';
 import { JoiPipe } from 'nestjs-joi';
 import { Class } from 'type-fest';

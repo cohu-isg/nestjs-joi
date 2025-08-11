@@ -14,7 +14,7 @@ import {
 } from '@nestjs/graphql';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as Joi from 'joi';
-import { JoiSchema, JoiSchemaExtends } from 'joi-class-decorators';
+import { JoiSchema, JoiSchemaExtends } from '@cohu-isg/joi-class-decorators';
 import { CREATE, JoiPipe, JoiValidationGroups } from 'nestjs-joi';
 import request from 'supertest';
 

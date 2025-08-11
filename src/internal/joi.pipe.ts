@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import * as Joi from 'joi';
-import { getTypeSchema, JoiValidationGroup } from 'joi-class-decorators';
+import { getTypeSchema, JoiValidationGroup } from '@cohu-isg/joi-class-decorators';
 import { SetRequired } from 'type-fest';
 
 import {

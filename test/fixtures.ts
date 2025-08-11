@@ -1,5 +1,10 @@
 import * as Joi from 'joi';
-import { getTypeSchema, JoiSchema, JoiSchemaExtends, JoiSchemaOptions } from 'joi-class-decorators';
+import {
+  getTypeSchema,
+  JoiSchema,
+  JoiSchemaExtends,
+  JoiSchemaOptions,
+} from '@cohu-isg/joi-class-decorators';
 
 export class EmptyType {}
 

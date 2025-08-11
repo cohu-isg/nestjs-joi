@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { JoiSchema } from 'joi-class-decorators';
+import { JoiSchema } from '@cohu-isg/joi-class-decorators';
 import { CREATE, DEFAULT, JoiPipe, UPDATE } from 'nestjs-joi';
 
 describe('request injection', () => {

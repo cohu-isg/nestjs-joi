@@ -19,7 +19,7 @@ import {
 } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as Joi from 'joi';
-import { JoiSchema } from 'joi-class-decorators';
+import { JoiSchema } from '@cohu-isg/joi-class-decorators';
 import { JoiPipe, JoiPipeModule } from 'nestjs-joi';
 import { Observable, throwError } from 'rxjs';
 

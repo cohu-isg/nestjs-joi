@@ -16,4 +16,4 @@ export {
   JoiSchemaExtends,
   JoiSchemaOptions,
   JoiValidationGroup,
-} from 'joi-class-decorators';
+} from '@cohu-isg/joi-class-decorators';

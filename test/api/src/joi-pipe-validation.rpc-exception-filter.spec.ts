@@ -2,7 +2,7 @@ import { Controller, INestMicroservice, Module, UseFilters, UsePipes } from '@ne
 import { ClientProxy, ClientsModule, MessagePattern, Transport } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as Joi from 'joi';
-import { JoiSchema } from 'joi-class-decorators';
+import { JoiSchema } from '@cohu-isg/joi-class-decorators';
 import { JoiPipe } from 'nestjs-joi';
 import { JoiPipeValidationRpcExceptionFilter } from 'nestjs-joi/microservice';
 

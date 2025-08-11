@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { DEFAULT } from 'joi-class-decorators';
+import { DEFAULT } from '@cohu-isg/joi-class-decorators';
 
 export const JoiValidationGroups = {
   DEFAULT,

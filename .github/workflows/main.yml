@@ -24,7 +24,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      - run: npm ci
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@cohu-isg'
+      
+      - name: Install dependencies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Unit tests
         run: npm run test:unit:once
       - name: API tests

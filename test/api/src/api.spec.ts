@@ -15,8 +15,7 @@ describe('API', () => {
         'JoiPipeModule',
 
         // joi-class-decorators
-        // This is a type
-        // 'JoiValidationGroup',
+        'JoiValidationGroup',
         'getTypeSchema',
         'getClassSchema',
         'JoiSchema',

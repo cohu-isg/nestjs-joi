@@ -15,16 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '16', '18', '20' ]
+        node: [ '20', '22' ]
     name: test on node ${{ matrix.node }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      - run: npm install
+      - run: npm ci
       - name: Unit tests
         run: npm run test:unit:once
       - name: API tests

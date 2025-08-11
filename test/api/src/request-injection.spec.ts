@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable unused-imports/no-unused-vars-ts */
-
 import * as Joi from 'joi';
 import { JoiSchema } from 'joi-class-decorators';
 import { CREATE, DEFAULT, JoiPipe, UPDATE } from 'nestjs-joi';
@@ -16,7 +13,7 @@ describe('request injection', () => {
   describe('POST', () => {
     it('should validate with the CREATE group (positive test)', async () => {
       const pipe = new JoiPipe({
-        // @ts-ignore
+        // @ts-expect-error
         method: 'post',
       });
 
@@ -26,7 +23,7 @@ describe('request injection', () => {
           {
             prop: 1,
           },
-          { type: 'body', metatype },
+          { type: '_body' as any, metatype },
         );
       } catch (error_) {
         error = error_;
@@ -37,7 +34,7 @@ describe('request injection', () => {
 
     it('should validate with the CREATE group (negative test)', async () => {
       const pipe = new JoiPipe({
-        // @ts-ignore
+        // @ts-expect-error
         method: 'post',
       });
 
@@ -46,7 +43,7 @@ describe('request injection', () => {
           {
             prop: 'a',
           },
-          { type: 'body', metatype },
+          { type: '_body' as any, metatype },
         );
         throw new Error('should not be thrown');
       } catch (error) {
@@ -63,7 +60,7 @@ describe('request injection', () => {
     describe(method, () => {
       it('should validate with the UPDATE group (positive test)', async () => {
         const pipe = new JoiPipe({
-          // @ts-ignore
+          // @ts-expect-error
           method,
         });
 
@@ -73,7 +70,7 @@ describe('request injection', () => {
             {
               prop: Symbol('prop'),
             },
-            { type: 'body', metatype },
+            { type: '_body' as any, metatype },
           );
         } catch (error_) {
           error = error_;
@@ -84,7 +81,7 @@ describe('request injection', () => {
 
       it('should validate with the CREATE group (negative test)', async () => {
         const pipe = new JoiPipe({
-          // @ts-ignore
+          // @ts-expect-error
           method,
         });
 
@@ -93,7 +90,7 @@ describe('request injection', () => {
             {
               prop: 'a',
             },
-            { type: 'body', metatype },
+            { type: '_body' as any, metatype },
           );
           throw new Error('should not be thrown');
         } catch (error) {
@@ -112,7 +109,7 @@ describe('request injection', () => {
     describe(method, () => {
       it('should validate with the default group (positive test)', async () => {
         const pipe = new JoiPipe({
-          // @ts-ignore
+          // @ts-expect-error
           method,
         });
 
@@ -122,7 +119,7 @@ describe('request injection', () => {
             {
               prop: 'a',
             },
-            { type: 'query', metatype },
+            { type: '_query' as any, metatype },
           );
         } catch (error_) {
           error = error_;
@@ -133,7 +130,7 @@ describe('request injection', () => {
 
       it('should validate with the default group (negative test)', async () => {
         const pipe = new JoiPipe({
-          // @ts-ignore
+          // @ts-expect-error
           method,
         });
 
@@ -142,7 +139,7 @@ describe('request injection', () => {
             {
               prop: 1,
             },
-            { type: 'query', metatype },
+            { type: '_query' as any, metatype },
           );
           throw new Error('should not be thrown');
         } catch (error) {

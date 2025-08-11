@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable unused-imports/no-unused-vars-ts */
-
 import { Controller, INestMicroservice, Module, UseFilters, UsePipes } from '@nestjs/common';
 import { ClientProxy, ClientsModule, MessagePattern, Transport } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -24,7 +21,7 @@ describe('JoiPipeValidationRpcExceptionFilter functionality', () => {
         usePipeValidationException: true,
       }),
     )
-    test(args: metatype) {
+    test(_args: metatype) {
       return 'OK';
     }
   }
@@ -46,12 +43,18 @@ describe('JoiPipeValidationRpcExceptionFilter functionality', () => {
           {
             name: 'AppService',
             transport: Transport.TCP,
+            options: { port: 8766 },
           },
         ]),
       ],
     }).compile();
 
-    app = module.createNestMicroservice({});
+    app = module.createNestMicroservice({
+      transport: Transport.TCP,
+      options: {
+        port: 8766, // Use specific port
+      },
+    });
 
     await app.listen();
 
@@ -60,15 +63,19 @@ describe('JoiPipeValidationRpcExceptionFilter functionality', () => {
   });
 
   afterEach(async () => {
-    await app.close();
-    client.close();
+    if (app) {
+      await app.close();
+    }
+    if (client) {
+      client.close();
+    }
   });
 
   it('should return an error object wth the Joi error message', async () => {
     try {
-      const result = await client.send({ cmd: 'test' }, { prop: 'duh' }).toPromise();
+      await client.send({ cmd: 'test' }, { prop: 'invalid' }).toPromise();
       throw new Error('should not be thrown');
-    } catch (error) {
+    } catch (error: any) {
       expect(error).toEqual({
         error: `Request validation of body failed, because: "prop" must be [default]`,
         message: `Request validation of body failed, because: "prop" must be [default]`,

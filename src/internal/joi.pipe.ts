@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/unified-signatures */ // Unified signatures are harder to read
-
 import {
   ArgumentMetadata,
   BadRequestException,
@@ -319,9 +317,7 @@ export class JoiPipe implements PipeTransform {
     const cacheKey = 'forced' + (forced ? '1' : '0') + (group ? 'group' + String(group) : '');
     // Check cache.
     if (this.typeSchemaMap.has(type)) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if (this.typeSchemaMap.get(type)!.has(cacheKey)) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return this.typeSchemaMap.get(type)!.get(cacheKey);
       }
     } else {
@@ -334,7 +330,6 @@ export class JoiPipe implements PipeTransform {
     // validate, otherwise we'd get errors for types with no decorators not intended
     // to be validated when used as global pipe
     if ((!typeSchema || !Object.keys(typeSchema.describe().keys).length) && !forced) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.typeSchemaMap.get(type)!.set(cacheKey, undefined);
       return undefined;
     }
@@ -345,7 +340,6 @@ export class JoiPipe implements PipeTransform {
     const finalSchema = typeSchema.required();
 
     // Cache value
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.typeSchemaMap.get(type)!.set(cacheKey, finalSchema);
 
     return finalSchema;

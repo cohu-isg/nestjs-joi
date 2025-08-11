@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable unused-imports/no-unused-vars-ts */
-
 import { BadRequestException } from '@nestjs/common';
 import * as Joi from 'joi';
 import { JoiSchema, JoiSchemaOptions } from 'joi-class-decorators';
@@ -39,12 +36,12 @@ const NATIVE_TYPES = [String, Object, Number, Array];
 
 describe('JoiPipe', () => {
   describe('arguments', () => {
-    function accept(what: string, ...args: unknown[]) {
+    function accept(what: string, ..._args: unknown[]) {
       it(`should accept (${what})`, () => {
         let error;
         try {
-          // @ts-ignore
-          new JoiPipe(...args);
+          // @ts-expect-error
+          new JoiPipe(..._args);
         } catch (error_) {
           error = error_;
         }
@@ -52,11 +49,11 @@ describe('JoiPipe', () => {
         expect(error).toBeUndefined();
       });
     }
-    function reject(what: string, withMessage: string, ...args: unknown[]) {
+    function reject(what: string, withMessage: string, ..._args: unknown[]) {
       it(`should reject (${what})`, () => {
         try {
-          // @ts-ignore
-          new JoiPipe(...args);
+          // @ts-expect-error
+          new JoiPipe(..._args);
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -109,7 +106,7 @@ describe('JoiPipe', () => {
 
     const payload = { prop: 'value' };
 
-    const returnVal = pipe.transform(payload, { type: 'query' });
+    const returnVal = pipe.transform(payload, { type: '_query' as any });
     expect(returnVal).toBe(payload);
   });
 
@@ -119,12 +116,12 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe();
 
         try {
-          pipe.transform(1, { type: 'query', metatype });
+          pipe.transform(1, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
             expect(error.message).toContain(
-              'Request validation of query failed, because: "value" must be of type object',
+              'Request validation of _query failed, because: "value" must be of type object',
             );
           } else {
             throw new Error('caught unexpected error type');
@@ -136,7 +133,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe();
 
         try {
-          pipe.transform({}, { type: 'query', metatype });
+          pipe.transform({}, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof BadRequestException).toBe(true);
@@ -147,12 +144,12 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe();
 
         try {
-          pipe.transform({}, { type: 'query', metatype });
+          pipe.transform({}, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
             expect(error.message).toContain(
-              'Request validation of query failed, because: "prop" is required',
+              'Request validation of _query failed, because: "prop" is required',
             );
           } else {
             throw new Error('caught unexpected error type');
@@ -164,11 +161,11 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe();
 
         try {
-          pipe.transform(1, { type: 'query', data: 'foo', metatype });
+          pipe.transform(1, { type: '_query' as any, data: 'foo', metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
-            expect(error.message).toContain(`Request validation of query item 'foo' failed`);
+            expect(error.message).toContain(`Request validation of _query item 'foo' failed`);
           } else {
             throw new Error('caught unexpected error type');
           }
@@ -178,7 +175,7 @@ describe('JoiPipe', () => {
       it('should transform transformable payloads', async () => {
         const pipe = new JoiPipe();
 
-        const returnVal = pipe.transform({ prop: '1' }, { type: 'query', metatype });
+        const returnVal = pipe.transform({ prop: '1' }, { type: '_query' as any, metatype });
 
         expect(returnVal).toEqual({ prop: 1 });
       });
@@ -188,7 +185,7 @@ describe('JoiPipe', () => {
 
         let error;
         try {
-          pipe.transform({ prop: '1' }, { type: 'query', metatype });
+          pipe.transform({ prop: '1' }, { type: '_query' as any, metatype });
         } catch (error_) {
           error = error_;
         }
@@ -200,7 +197,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe();
 
         try {
-          pipe.transform(1, { type: 'query', metatype });
+          pipe.transform(1, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof BadRequestException).toBeTruthy();
@@ -211,7 +208,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe({ usePipeValidationException: false });
 
         try {
-          pipe.transform(1, { type: 'query', metatype });
+          pipe.transform(1, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof BadRequestException).toBeTruthy();
@@ -222,7 +219,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe({ usePipeValidationException: true });
 
         try {
-          pipe.transform(1, { type: 'query', metatype });
+          pipe.transform(1, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof JoiPipeValidationException).toBeTruthy();
@@ -236,7 +233,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe();
 
         try {
-          pipe.transform({ prop: '-' }, { type: 'query', metatype: errorMetatype });
+          pipe.transform({ prop: '-' }, { type: '_query' as any, metatype: errorMetatype });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -252,7 +249,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe({ skipErrorFormatting: false });
 
         try {
-          pipe.transform(1, { type: 'query', metatype });
+          pipe.transform(1, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -267,7 +264,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe({ skipErrorFormatting: true });
 
         try {
-          pipe.transform(1, { type: 'query', metatype });
+          pipe.transform(1, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -282,7 +279,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe();
 
         try {
-          pipe.transform(1, { type: 'query', metatype });
+          pipe.transform(1, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -297,7 +294,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe({ skipErrorFormatting: true, usePipeValidationException: true });
 
         try {
-          pipe.transform(1, { type: 'query', metatype });
+          pipe.transform(1, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -316,7 +313,10 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe({});
 
         // Unknown property to test the default setting of "allowUnknown: true"
-        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: 'query', metatype });
+        const returnVal = pipe.transform(
+          { prop: 1, unknownProp: 1 },
+          { type: '_query' as any, metatype },
+        );
         expect(returnVal).toEqual({ prop: 1, unknownProp: 1 });
       });
 
@@ -326,7 +326,10 @@ describe('JoiPipe', () => {
         });
 
         // Unknown property to test the default setting of "allowUnknown: true"
-        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: 'query', metatype });
+        const returnVal = pipe.transform(
+          { prop: 1, unknownProp: 1 },
+          { type: '_query' as any, metatype },
+        );
         expect(returnVal).toEqual({ prop: 1, unknownProp: 1 });
       });
 
@@ -338,7 +341,10 @@ describe('JoiPipe', () => {
         });
 
         // unknownProp should be stripped
-        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: 'query', metatype });
+        const returnVal = pipe.transform(
+          { prop: 1, unknownProp: 1 },
+          { type: '_query' as any, metatype },
+        );
         expect(returnVal).toEqual({ prop: 1 });
       });
 
@@ -352,12 +358,12 @@ describe('JoiPipe', () => {
 
         try {
           // Should produce two errors, one for the incorrect type of "prop" and one for the unknown property
-          pipe.transform({ prop: 'a', unknownProp: 1 }, { type: 'query', metatype });
+          pipe.transform({ prop: 'a', unknownProp: 1 }, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
             expect(error.message).toBe(
-              'Request validation of query failed, because: "prop" must be a number, "unknownProp" is not allowed',
+              'Request validation of _query failed, because: "prop" must be a number, "unknownProp" is not allowed',
             );
           } else {
             throw new Error('caught unexpected error type');
@@ -370,7 +376,7 @@ describe('JoiPipe', () => {
 
         let error;
         try {
-          pipe.transform({ prop: 'value' }, { type: 'query', metatype: emptyType });
+          pipe.transform({ prop: 'value' }, { type: '_query' as any, metatype: emptyType });
         } catch (error_) {
           error = error_;
         }
@@ -384,7 +390,7 @@ describe('JoiPipe', () => {
 
           let error;
           try {
-            pipe.transform(undefined, { type: 'query', metatype: nativeType });
+            pipe.transform(undefined, { type: '_query' as any, metatype: nativeType });
           } catch (error_) {
             error = error_;
           }
@@ -401,12 +407,12 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(Joi.string());
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
             expect(error.message).toContain(
-              'Request validation of query failed, because: "value" must be a string',
+              'Request validation of _query failed, because: "value" must be a string',
             );
           } else {
             throw new Error('caught unexpected error type');
@@ -418,7 +424,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(Joi.string());
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof BadRequestException).toBe(true);
@@ -434,12 +440,12 @@ describe('JoiPipe', () => {
         );
 
         try {
-          pipe.transform({}, { type: 'query' });
+          pipe.transform({}, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
             expect(error.message).toContain(
-              'Request validation of query failed, because: "one" is required, "two" is required',
+              'Request validation of _query failed, because: "one" is required, "two" is required',
             );
           } else {
             throw new Error('caught unexpected error type');
@@ -451,11 +457,11 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(Joi.string());
 
         try {
-          pipe.transform(1, { type: 'query', data: 'foo' });
+          pipe.transform(1, { type: '_query' as any, data: 'foo' });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
-            expect(error.message).toContain(`Request validation of query item 'foo' failed`);
+            expect(error.message).toContain(`Request validation of _query item 'foo' failed`);
           } else {
             throw new Error('caught unexpected error type');
           }
@@ -465,7 +471,7 @@ describe('JoiPipe', () => {
       it('should transform transformable payloads', async () => {
         const pipe = new JoiPipe(Joi.number());
 
-        const returnVal = pipe.transform('1', { type: 'query' });
+        const returnVal = pipe.transform('1', { type: '_query' as any });
 
         expect(returnVal).toEqual(1);
       });
@@ -475,7 +481,7 @@ describe('JoiPipe', () => {
 
         let error;
         try {
-          pipe.transform('1', { type: 'query' });
+          pipe.transform('1', { type: '_query' as any });
         } catch (error_) {
           error = error_;
         }
@@ -487,7 +493,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(Joi.string());
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof BadRequestException).toBeTruthy();
@@ -498,7 +504,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(Joi.string(), { usePipeValidationException: false });
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof BadRequestException).toBeTruthy();
@@ -509,7 +515,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(Joi.string(), { usePipeValidationException: true });
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof JoiPipeValidationException).toBeTruthy();
@@ -523,7 +529,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(Joi.string().alphanum().error(new CustomError('custom message')));
 
         try {
-          pipe.transform('-', { type: 'query' });
+          pipe.transform('-', { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -539,7 +545,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(Joi.string(), { skipErrorFormatting: false });
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -554,7 +560,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(Joi.string(), { skipErrorFormatting: true });
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -572,7 +578,7 @@ describe('JoiPipe', () => {
         });
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -590,7 +596,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatypeSchema);
 
         // Unknown property to test the default setting of "allowUnknown: true"
-        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: 'query' });
+        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: '_query' as any });
         expect(returnVal).toEqual({ prop: 1, unknownProp: 1 });
       });
 
@@ -600,7 +606,7 @@ describe('JoiPipe', () => {
         });
 
         // Unknown property to test the default setting of "allowUnknown: true"
-        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: 'query' });
+        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: '_query' as any });
         expect(returnVal).toEqual({ prop: 1, unknownProp: 1 });
       });
 
@@ -612,7 +618,7 @@ describe('JoiPipe', () => {
         });
 
         // unknownProp should be stripped
-        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: 'query' });
+        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: '_query' as any });
         expect(returnVal).toEqual({ prop: 1 });
       });
 
@@ -627,12 +633,12 @@ describe('JoiPipe', () => {
         try {
           // Should produce one error for the incorrect type of "prop", but non for the unknown property, because
           // the schema itself specifies allowUnknown: true, which takes precedence
-          pipe.transform({ prop: 'a', unknownProp: 1 }, { type: 'query' });
+          pipe.transform({ prop: 'a', unknownProp: 1 }, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
             expect(error.message).toBe(
-              'Request validation of query failed, because: "prop" must be a number',
+              'Request validation of _query failed, because: "prop" must be a number',
             );
           } else {
             throw new Error('caught unexpected error type');
@@ -648,12 +654,12 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatype);
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
             expect(error.message).toContain(
-              'Request validation of query failed, because: "value" must be of type object',
+              'Request validation of _query failed, because: "value" must be of type object',
             );
           } else {
             throw new Error('caught unexpected error type');
@@ -665,7 +671,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatype);
 
         try {
-          pipe.transform({}, { type: 'query' });
+          pipe.transform({}, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof BadRequestException).toBe(true);
@@ -676,12 +682,12 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatype);
 
         try {
-          pipe.transform({}, { type: 'query' });
+          pipe.transform({}, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
             expect(error.message).toContain(
-              'Request validation of query failed, because: "prop" is required',
+              'Request validation of _query failed, because: "prop" is required',
             );
           } else {
             throw new Error('caught unexpected error type');
@@ -693,11 +699,11 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatype);
 
         try {
-          pipe.transform(1, { type: 'query', data: 'foo' });
+          pipe.transform(1, { type: '_query' as any, data: 'foo' });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
-            expect(error.message).toContain(`Request validation of query item 'foo' failed`);
+            expect(error.message).toContain(`Request validation of _query item 'foo' failed`);
           } else {
             throw new Error('caught unexpected error type');
           }
@@ -707,7 +713,7 @@ describe('JoiPipe', () => {
       it('should transform transformable payloads', async () => {
         const pipe = new JoiPipe(metatype);
 
-        const returnVal = pipe.transform({ prop: '1' }, { type: 'query' });
+        const returnVal = pipe.transform({ prop: '1' }, { type: '_query' as any });
 
         expect(returnVal).toEqual({ prop: 1 });
       });
@@ -717,7 +723,7 @@ describe('JoiPipe', () => {
 
         let error;
         try {
-          pipe.transform({ prop: '1' }, { type: 'query' });
+          pipe.transform({ prop: '1' }, { type: '_query' as any });
         } catch (error_) {
           error = error_;
         }
@@ -729,7 +735,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatype);
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof BadRequestException).toBeTruthy();
@@ -740,7 +746,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatype, { usePipeValidationException: false });
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof BadRequestException).toBeTruthy();
@@ -751,7 +757,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatype, { usePipeValidationException: true });
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           expect(error instanceof JoiPipeValidationException).toBeTruthy();
@@ -765,7 +771,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(errorMetatype);
 
         try {
-          pipe.transform({ prop: '-' }, { type: 'query' });
+          pipe.transform({ prop: '-' }, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -781,7 +787,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatype, { skipErrorFormatting: false });
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -796,7 +802,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatype, { skipErrorFormatting: true });
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -811,7 +817,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe();
 
         try {
-          pipe.transform(1, { type: 'query', metatype });
+          pipe.transform(1, { type: '_query' as any, metatype });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -829,7 +835,7 @@ describe('JoiPipe', () => {
         });
 
         try {
-          pipe.transform(1, { type: 'query' });
+          pipe.transform(1, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
@@ -847,7 +853,7 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(metatype, {});
 
         // Unknown property to test the default setting of "allowUnknown: true"
-        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: 'query' });
+        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: '_query' as any });
         expect(returnVal).toEqual({ prop: 1, unknownProp: 1 });
       });
 
@@ -857,7 +863,7 @@ describe('JoiPipe', () => {
         });
 
         // Unknown property to test the default setting of "allowUnknown: true"
-        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: 'query' });
+        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: '_query' as any });
         expect(returnVal).toEqual({ prop: 1, unknownProp: 1 });
       });
 
@@ -869,7 +875,7 @@ describe('JoiPipe', () => {
         });
 
         // unknownProp should be stripped
-        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: 'query' });
+        const returnVal = pipe.transform({ prop: 1, unknownProp: 1 }, { type: '_query' as any });
         expect(returnVal).toEqual({ prop: 1 });
       });
 
@@ -883,12 +889,12 @@ describe('JoiPipe', () => {
 
         try {
           // Should produce two errors, one for the incorrect type of "prop" and one for the unknown property
-          pipe.transform({ prop: 'a', unknownProp: 1 }, { type: 'query' });
+          pipe.transform({ prop: 'a', unknownProp: 1 }, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
             expect(error.message).toBe(
-              'Request validation of query failed, because: "prop" must be a number, "unknownProp" is not allowed',
+              'Request validation of _query failed, because: "prop" must be a number, "unknownProp" is not allowed',
             );
           } else {
             throw new Error('caught unexpected error type');
@@ -900,12 +906,12 @@ describe('JoiPipe', () => {
         const pipe = new JoiPipe(emptyType);
 
         try {
-          pipe.transform({ prop: 'value' }, { type: 'query' });
+          pipe.transform({ prop: 'value' }, { type: '_query' as any });
           throw new Error('should not be thrown');
         } catch (error) {
           if (error instanceof Error) {
             expect(error.message).toContain(
-              'Request validation of query failed, because: "prop" is not allowed',
+              'Request validation of _query failed, because: "prop" is not allowed',
             );
           } else {
             throw new Error('caught unexpected error type');
@@ -919,7 +925,7 @@ describe('JoiPipe', () => {
 
           let error;
           try {
-            pipe.transform(undefined, { type: 'query' });
+            pipe.transform(undefined, { type: '_query' as any });
           } catch (error_) {
             error = error_;
           }
@@ -951,7 +957,6 @@ describe('JoiPipe', () => {
     };
 
     for (const [method, value] of Object.entries(cases)) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const httpRequestObj: any = { method };
 
       describe(`${method} request`, () => {
@@ -960,7 +965,7 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe(httpRequestObj);
 
             try {
-              pipe.transform({ prop: 'foo' }, { type: 'query', metatype: httpMetatype });
+              pipe.transform({ prop: 'foo' }, { type: '_query' as any, metatype: httpMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               if (error instanceof Error) {
@@ -975,7 +980,7 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe(httpRequestObj);
 
             try {
-              pipe.transform({ prop: 'foo' }, { type: 'query', metatype: httpMetatype });
+              pipe.transform({ prop: 'foo' }, { type: '_query' as any, metatype: httpMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               expect(error instanceof BadRequestException).toBe(true);
@@ -986,12 +991,12 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe(httpRequestObj);
 
             try {
-              pipe.transform({ prop: 'foo' }, { type: 'query', metatype: httpMetatype });
+              pipe.transform({ prop: 'foo' }, { type: '_query' as any, metatype: httpMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               if (error instanceof Error) {
                 expect(error.message).toContain(
-                  `Request validation of query failed, because: "prop" must be [${value}]`,
+                  `Request validation of _query failed, because: "prop" must be [${value}]`,
                 );
               } else {
                 throw new Error('caught unexpected error type');
@@ -1003,11 +1008,11 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe(httpRequestObj);
 
             try {
-              pipe.transform(1, { type: 'query', data: 'foo', metatype: httpMetatype });
+              pipe.transform(1, { type: '_query' as any, data: 'foo', metatype: httpMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               if (error instanceof Error) {
-                expect(error.message).toContain(`Request validation of query item 'foo' failed`);
+                expect(error.message).toContain(`Request validation of _query item 'foo' failed`);
               } else {
                 throw new Error('caught unexpected error type');
               }
@@ -1019,7 +1024,7 @@ describe('JoiPipe', () => {
 
             const returnVal = pipe.transform(
               { prop: value, number: '1' },
-              { type: 'query', metatype: httpMetatype },
+              { type: '_query' as any, metatype: httpMetatype },
             );
 
             expect(returnVal).toEqual({ prop: value, number: 1 });
@@ -1032,7 +1037,7 @@ describe('JoiPipe', () => {
             try {
               pipe.transform(
                 { prop: value, number: '1' },
-                { type: 'query', metatype: httpMetatype },
+                { type: '_query' as any, metatype: httpMetatype },
               );
             } catch (error_) {
               error = error_;
@@ -1045,7 +1050,7 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe(httpRequestObj);
 
             try {
-              pipe.transform(1, { type: 'query', metatype: httpMetatype });
+              pipe.transform(1, { type: '_query' as any, metatype: httpMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               expect(error instanceof BadRequestException).toBeTruthy();
@@ -1056,7 +1061,7 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe(httpRequestObj, { usePipeValidationException: false });
 
             try {
-              pipe.transform(1, { type: 'query', metatype: httpMetatype });
+              pipe.transform(1, { type: '_query' as any, metatype: httpMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               expect(error instanceof BadRequestException).toBeTruthy();
@@ -1067,7 +1072,7 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe(httpRequestObj, { usePipeValidationException: true });
 
             try {
-              pipe.transform(1, { type: 'query', metatype: httpMetatype });
+              pipe.transform(1, { type: '_query' as any, metatype: httpMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               expect(error instanceof JoiPipeValidationException).toBeTruthy();
@@ -1081,7 +1086,7 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe(httpRequestObj);
 
             try {
-              pipe.transform({ prop: '-' }, { type: 'query', metatype: errorMetatype });
+              pipe.transform({ prop: '-' }, { type: '_query' as any, metatype: errorMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               if (error instanceof Error) {
@@ -1097,7 +1102,7 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe(httpRequestObj, { skipErrorFormatting: false });
 
             try {
-              pipe.transform(1, { type: 'query', metatype: httpMetatype });
+              pipe.transform(1, { type: '_query' as any, metatype: httpMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               if (error instanceof Error) {
@@ -1112,7 +1117,7 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe(httpRequestObj, { skipErrorFormatting: true });
 
             try {
-              pipe.transform(1, { type: 'query', metatype: httpMetatype });
+              pipe.transform(1, { type: '_query' as any, metatype: httpMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               if (error instanceof Error) {
@@ -1127,7 +1132,7 @@ describe('JoiPipe', () => {
             const pipe = new JoiPipe();
 
             try {
-              pipe.transform(1, { type: 'query', metatype });
+              pipe.transform(1, { type: '_query' as any, metatype });
               throw new Error('should not be thrown');
             } catch (error) {
               if (error instanceof Error) {
@@ -1145,7 +1150,7 @@ describe('JoiPipe', () => {
             });
 
             try {
-              pipe.transform(1, { type: 'query', metatype: httpMetatype });
+              pipe.transform(1, { type: '_query' as any, metatype: httpMetatype });
               throw new Error('should not be thrown');
             } catch (error) {
               if (error instanceof Error) {
@@ -1165,7 +1170,7 @@ describe('JoiPipe', () => {
             // Unknown property to test the default setting of "allowUnknown: true"
             const returnVal = pipe.transform(
               { prop: 1, unknownProp: 1 },
-              { type: 'query', metatype },
+              { type: '_query' as any, metatype },
             );
             expect(returnVal).toEqual({ prop: 1, unknownProp: 1 });
           });
@@ -1178,7 +1183,7 @@ describe('JoiPipe', () => {
             // Unknown property to test the default setting of "allowUnknown: true"
             const returnVal = pipe.transform(
               { prop: 1, unknownProp: 1 },
-              { type: 'query', metatype },
+              { type: '_query' as any, metatype },
             );
             expect(returnVal).toEqual({ prop: 1, unknownProp: 1 });
           });
@@ -1193,7 +1198,7 @@ describe('JoiPipe', () => {
             // unknownProp should be stripped
             const returnVal = pipe.transform(
               { prop: 1, unknownProp: 1 },
-              { type: 'query', metatype },
+              { type: '_query' as any, metatype },
             );
             expect(returnVal).toEqual({ prop: 1 });
           });
@@ -1208,12 +1213,12 @@ describe('JoiPipe', () => {
 
             try {
               // Should produce two errors, one for the incorrect type of "prop" and one for the unknown property
-              pipe.transform({ prop: 'a', unknownProp: 1 }, { type: 'query', metatype });
+              pipe.transform({ prop: 'a', unknownProp: 1 }, { type: '_query' as any, metatype });
               throw new Error('should not be thrown');
             } catch (error) {
               if (error instanceof Error) {
                 expect(error.message).toBe(
-                  'Request validation of query failed, because: "prop" must be a number, "unknownProp" is not allowed',
+                  'Request validation of _query failed, because: "prop" must be a number, "unknownProp" is not allowed',
                 );
               } else {
                 throw new Error('caught unexpected error type');
@@ -1226,7 +1231,7 @@ describe('JoiPipe', () => {
 
             let error;
             try {
-              pipe.transform({ prop: 'value' }, { type: 'query', metatype: emptyType });
+              pipe.transform({ prop: 'value' }, { type: '_query' as any, metatype: emptyType });
             } catch (error_) {
               error = error_;
             }
@@ -1240,7 +1245,7 @@ describe('JoiPipe', () => {
 
               let error;
               try {
-                pipe.transform(undefined, { type: 'query', metatype: nativeType });
+                pipe.transform(undefined, { type: '_query' as any, metatype: nativeType });
               } catch (error_) {
                 error = error_;
               }

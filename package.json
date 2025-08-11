@@ -1,6 +1,6 @@
 {
-  "name": "nestjs-joi",
-  "version": "1.11.0",
+  "name": "@cohu-isg/nestjs-joi",
+  "version": "1.0.0",
   "description": "Easy to use JoiPipe as an interface between joi and NestJS with optional decorator-based schema construction.",
   "scripts": {
     "test:unit": "NODE_ENV=testing jest -c .jest-unit.json --watchAll",
@@ -13,19 +13,20 @@
     "clean": "rm -rf dist/",
     "compile": "npm run clean && echo Compiling... && tsc -p .",
     "compile:dist": "npm run clean && echo Compiling... && tsc -p tsconfig.dist.json",
-    "check": "eslint -c .eslintrc.fix.json '{src,test}/**/*.{ts,js}'",
-    "fix": "eslint -c .eslintrc.fix.json --fix '{src,test}/**/*.{ts,js}'",
-    "precommit": "lint-staged"
+    "check": "eslint '{src,test}/**/*.{ts,js}'",
+    "fix": "eslint --fix '{src,test}/**/*.{ts,js}'",
+    "precommit": "lint-staged",
+    "prepare": "husky"
   },
   "keywords": [
     "nestjs",
     "joi"
   ],
-  "author": "William Hefter",
+  "author": "Tengku Arif",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/whefter/nestjs-joi"
+    "url": "https://github.com/cohu-isg/nestjs-joi"
   },
   "main": "index.js",
   "types": "index.d.ts",
@@ -34,57 +35,58 @@
     "joi-class-decorators": "^1.1.2"
   },
   "devDependencies": {
-    "@apollo/server": "^4.9.1",
-    "@commitlint/cli": "^17.7.2",
-    "@commitlint/config-conventional": "^17.7.0",
-    "@elunic/ecs-prettier": "^0.2.1",
-    "@elunic/ecs-tsconfig": "^0.1.1",
-    "@elunic/eslint-config-ecs": "^0.1.10",
-    "@nestjs/apollo": "^12.0.7",
-    "@nestjs/common": "^10.1.3",
-    "@nestjs/core": "^10.1.3",
-    "@nestjs/graphql": "^12.0.7",
-    "@nestjs/microservices": "^10.1.3",
-    "@nestjs/platform-express": "^10.1.3",
-    "@nestjs/testing": "^10.1.3",
-    "@types/eslint": "^7.2.6",
-    "@types/jest": "^26.0.14",
-    "@types/lodash": "^4.14.161",
-    "@types/node": "^14.11.2",
-    "@types/prettier": "^2.1.1",
-    "@types/sinon": "^9.0.7",
-    "@types/source-map-support": "^0.5.3",
-    "@types/supertest": "^2.0.10",
-    "eslint": "^7.19.0",
-    "graphql": "^16.7.1",
-    "graphql-tools": "^8.2.0",
-    "husky": "^4.3.0",
-    "jest": "^29.7.0",
-    "jest-junit": "^13.0.0",
-    "joi": "^17.2.1",
-    "lint-staged": "^11.0.0",
+    "@apollo/server": "^5.0.0",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@nestjs/apollo": "^13.1.0",
+    "@nestjs/common": "^11.1.6",
+    "@nestjs/core": "^11.1.6",
+    "@nestjs/graphql": "^13.1.0",
+    "@nestjs/microservices": "^11.1.6",
+    "@nestjs/platform-express": "^11.1.6",
+    "@nestjs/testing": "^11.1.6",
+    "@types/eslint": "^9.6.1",
+    "@types/jest": "^30.0.0",
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^24.2.1",
+    "@types/sinon": "^17.0.4",
+    "@types/source-map-support": "^0.5.10",
+    "@types/supertest": "^6.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "graphql": "^16.11.0",
+    "graphql-tools": "^9.0.20",
+    "husky": "^9.1.7",
+    "jest": "^30.0.5",
+    "jest-junit": "^16.0.0",
+    "joi": "^18.0.0",
+    "lint-staged": "^16.1.5",
     "lodash": "^4.17.21",
-    "prettier": "^2.1.2",
-    "reflect-metadata": "^0.1.13",
-    "sinon": "^9.1.0",
-    "source-map-support": "^0.5.19",
-    "supertest": "^5.0.0",
-    "ts-jest": "^29.2.5",
-    "ts-loader": "^8.0.4",
-    "ts-node": "^9.0.0",
-    "tsconfig-paths": "^3.9.0",
-    "type-fest": "^1.0.1",
-    "typescript": "~4.4.0"
+    "prettier": "^3.6.2",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "sinon": "^21.0.0",
+    "source-map-support": "^0.5.21",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.1",
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "type-fest": "^4.41.0",
+    "typescript": "^5.8.3"
   },
   "peerDependencies": {
-    "@nestjs/common": "^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0",
-    "@nestjs/core": "^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0",
-    "joi": "^17.2.1"
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "joi": "^18.0.0"
   },
   "engines": {
-    "node": ">= 16.0.0"
+    "node": ">= 20.0.0"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com/"
   }
 }

@@ -1,13 +1,23 @@
 {
-  "extends": "../../node_modules/@elunic/ecs-tsconfig/tsconfig.json",
   "compilerOptions": {
     "lib": [
-      "esnext"
+      "es2022"
     ],
-    "target": "es2015",
+    "target": "es2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "skipLibCheck": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "declaration": false,
+    "noEmitOnError": false,
+    "pretty": true,
+    "sourceMap": true,
     "baseUrl": "./",
     "paths": {
       "nestjs-joi": [
@@ -15,10 +25,13 @@
       ],
       "nestjs-joi/*": [
         "../../src/*"
-      ],
+      ]
     }
   },
   "include": [
     "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

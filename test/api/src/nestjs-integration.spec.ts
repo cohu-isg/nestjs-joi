@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable unused-imports/no-unused-vars-ts */
-
 import {
   Body,
   Controller,
@@ -17,7 +14,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as Joi from 'joi';
 import { JoiSchema } from 'joi-class-decorators';
 import { JoiPipe, JOIPIPE_OPTIONS, JoiPipeModule, JoiValidationGroups } from 'nestjs-joi';
-import * as request from 'supertest';
+import request from 'supertest';
 
 describe('NestJS integration', () => {
   class metatype {
@@ -30,7 +27,6 @@ describe('NestJS integration', () => {
   let controller;
   let module: TestingModule;
   let app: INestApplication;
-  let request_: request.Test;
 
   // Note: we will test one case (@Query or @Body) each, since the other cases
   // are considered to be equivalent
@@ -44,22 +40,22 @@ describe('NestJS integration', () => {
           @Controller()
           class ctrl {
             @Get('/')
-            get(@Query() query: metatype): unknown {
+            get(@Query() _query: metatype): unknown {
               return { status: 'OK' };
             }
 
             @Post('/')
-            post(@Body() body: metatype): unknown {
+            post(@Body() _body: metatype): unknown {
               return { status: 'OK' };
             }
 
             @Put('/')
-            put(@Body() body: metatype): unknown {
+            put(@Body() _body: metatype): unknown {
               return { status: 'OK' };
             }
 
             @Patch('/')
-            patch(@Body() body: metatype): unknown {
+            patch(@Body() _body: metatype): unknown {
               return { status: 'OK' };
             }
           }
@@ -82,8 +78,8 @@ describe('NestJS integration', () => {
           it('should use the pipe correctly (positive test)', async () => {
             return request(app.getHttpServer())
               .get('/?prop=foo')
-              .expect(res =>
-                expect(res.body).toEqual({
+              .expect((res: any) =>
+                expect(res._body).toEqual({
                   status: 'OK',
                 }),
               );
@@ -92,8 +88,8 @@ describe('NestJS integration', () => {
           it('should use the pipe correctly (negative test)', async () => {
             return request(app.getHttpServer())
               .get('/')
-              .expect(res =>
-                expect(res.body).toMatchObject({
+              .expect((res: any) =>
+                expect(res._body).toMatchObject({
                   statusCode: 400,
                   message: expect.stringContaining('"prop" is required'),
                 }),
@@ -106,8 +102,8 @@ describe('NestJS integration', () => {
             return request(app.getHttpServer())
               .post('/')
               .send({ prop: 1 })
-              .expect(res =>
-                expect(res.body).toEqual({
+              .expect((res: any) =>
+                expect(res._body).toEqual({
                   status: 'OK',
                 }),
               );
@@ -117,8 +113,8 @@ describe('NestJS integration', () => {
             return request(app.getHttpServer())
               .post('/')
               .send({ prop: 'a' })
-              .expect(res =>
-                expect(res.body).toMatchObject({
+              .expect((res: any) =>
+                expect(res._body).toMatchObject({
                   statusCode: 400,
                   message: expect.stringContaining('"prop" must be a number'),
                 }),
@@ -131,8 +127,8 @@ describe('NestJS integration', () => {
             return request(app.getHttpServer())
               .put('/')
               .send({ prop: [] })
-              .expect(res =>
-                expect(res.body).toEqual({
+              .expect((res: any) =>
+                expect(res._body).toEqual({
                   status: 'OK',
                 }),
               );
@@ -142,8 +138,8 @@ describe('NestJS integration', () => {
             return request(app.getHttpServer())
               .put('/')
               .send({ prop: 'a' })
-              .expect(res =>
-                expect(res.body).toMatchObject({
+              .expect((res: any) =>
+                expect(res._body).toMatchObject({
                   statusCode: 400,
                   message: expect.stringContaining('"prop" must be an array'),
                 }),
@@ -156,8 +152,8 @@ describe('NestJS integration', () => {
             return request(app.getHttpServer())
               .patch('/')
               .send({ prop: [] })
-              .expect(res =>
-                expect(res.body).toEqual({
+              .expect((res: any) =>
+                expect(res._body).toEqual({
                   status: 'OK',
                 }),
               );
@@ -167,8 +163,8 @@ describe('NestJS integration', () => {
             return request(app.getHttpServer())
               .patch('/')
               .send({ prop: 'a' })
-              .expect(res =>
-                expect(res.body).toMatchObject({
+              .expect((res: any) =>
+                expect(res._body).toMatchObject({
                   statusCode: 400,
                   message: expect.stringContaining('"prop" must be an array'),
                 }),
@@ -183,7 +179,7 @@ describe('NestJS integration', () => {
         @Controller()
         class ctrl {
           @Get('/')
-          get(@Query() query: metatype): unknown {
+          get(@Query() _query: metatype): unknown {
             return { status: 'OK' };
           }
         }
@@ -213,8 +209,8 @@ describe('NestJS integration', () => {
       it('should use the pipe correctly (positive test)', async () => {
         return request(app.getHttpServer())
           .get('/?prop=foo')
-          .expect(res =>
-            expect(res.body).toEqual({
+          .expect((res: any) =>
+            expect(res._body).toEqual({
               status: 'OK',
             }),
           );
@@ -223,8 +219,8 @@ describe('NestJS integration', () => {
       it('should use the pipe correctly (negative test)', async () => {
         return request(app.getHttpServer())
           .get('/')
-          .expect(res =>
-            expect(res.body).toMatchObject({
+          .expect((res: any) =>
+            expect(res._body).toMatchObject({
               statusCode: 500,
               message: expect.stringContaining('Internal server error'),
             }),
@@ -237,7 +233,7 @@ describe('NestJS integration', () => {
         @Controller()
         class ctrl {
           @Get('/')
-          get(@Query() query: metatype): unknown {
+          get(@Query() _query: metatype): unknown {
             return { status: 'OK' };
           }
         }
@@ -275,8 +271,8 @@ describe('NestJS integration', () => {
       it('should use the pipe correctly (positive test)', async () => {
         return request(app.getHttpServer())
           .get('/?prop=foo')
-          .expect(res =>
-            expect(res.body).toEqual({
+          .expect((res: any) =>
+            expect(res._body).toEqual({
               status: 'OK',
             }),
           );
@@ -285,8 +281,8 @@ describe('NestJS integration', () => {
       it('should use the pipe correctly (negative test)', async () => {
         return request(app.getHttpServer())
           .get('/')
-          .expect(res =>
-            expect(res.body).toMatchObject({
+          .expect((res: any) =>
+            expect(res._body).toMatchObject({
               statusCode: 500,
               message: expect.stringContaining('Internal server error'),
             }),
@@ -301,7 +297,7 @@ describe('NestJS integration', () => {
         @Controller()
         class ctrl {
           @Get('/')
-          get(@Query(JoiPipe) query: metatype): unknown {
+          get(@Query(JoiPipe) _query: metatype): unknown {
             return { status: 'OK' };
           }
         }
@@ -322,8 +318,8 @@ describe('NestJS integration', () => {
       it('should use the pipe correctly (positive test)', async () => {
         return request(app.getHttpServer())
           .get('/?prop=foo')
-          .expect(res =>
-            expect(res.body).toEqual({
+          .expect((res: any) =>
+            expect(res._body).toEqual({
               status: 'OK',
             }),
           );
@@ -332,8 +328,8 @@ describe('NestJS integration', () => {
       it('should use the pipe correctly (negative test)', async () => {
         return request(app.getHttpServer())
           .get('/?prop=')
-          .expect(res =>
-            expect(res.body).toMatchObject({
+          .expect((res: any) =>
+            expect(res._body).toMatchObject({
               statusCode: 400,
               message: expect.stringContaining('"prop" is not allowed to be empty'),
             }),
@@ -347,7 +343,7 @@ describe('NestJS integration', () => {
       @Controller()
       class ctrl {
         @Get('/')
-        get(@Query(JoiPipe) query: metatype): unknown {
+        get(@Query(JoiPipe) _query: metatype): unknown {
           return { status: 'OK' };
         }
       }
@@ -378,8 +374,8 @@ describe('NestJS integration', () => {
     it('should use the pipe correctly (positive test)', async () => {
       return request(app.getHttpServer())
         .get('/?prop=foo')
-        .expect(res =>
-          expect(res.body).toEqual({
+        .expect((res: any) =>
+          expect(res._body).toEqual({
             status: 'OK',
           }),
         );
@@ -388,8 +384,8 @@ describe('NestJS integration', () => {
     it('should use the pipe correctly (negative test)', async () => {
       return request(app.getHttpServer())
         .get('/?prop=')
-        .expect(res =>
-          expect(res.body).toMatchObject({
+        .expect((res: any) =>
+          expect(res._body).toMatchObject({
             statusCode: 500,
             message: expect.stringContaining('Internal server error'),
           }),

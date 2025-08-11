@@ -23,7 +23,7 @@ export class BasicType {
 export class ExtendedType extends BasicType {
   @JoiSchema(Joi.string().valid('extended_prop2').required())
   @JoiSchema(['group1'], Joi.string().valid('extended_prop2_group1').required())
-  prop2!: unknown;
+  declare prop2: unknown;
 
   @JoiSchema(Joi.string().valid('extended_extendedProp').required())
   @JoiSchema(['group1'], Joi.string().valid('extended_extendedProp_group1').required())
@@ -34,7 +34,7 @@ export class ExtendedType extends BasicType {
 export class DecoratorExtendedType {
   @JoiSchema(Joi.string().valid('decorator_extended_prop2').required())
   @JoiSchema(['group1'], Joi.string().valid('decorator_extended_prop2_group1').required())
-  prop2!: unknown;
+  declare prop2: unknown;
 
   @JoiSchema(Joi.string().valid('decorator_extended_extendedProp').required())
   @JoiSchema(['group1'], Joi.string().valid('decorator_extended_extendedProp_group1').required())

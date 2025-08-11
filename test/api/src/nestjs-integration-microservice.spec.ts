@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable unused-imports/no-unused-vars-ts */
-
 import {
   ArgumentsHost,
   BadRequestException,
@@ -35,8 +32,7 @@ describe('NestJS Microservice integration', () => {
 
   @Catch(BadRequestException)
   class ExceptionFilter implements RpcExceptionFilter<BadRequestException> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    catch(exception: BadRequestException, host: ArgumentsHost): Observable<any> {
+    catch(exception: BadRequestException, _host: ArgumentsHost): Observable<any> {
       return throwError(() => new RpcException(exception.message));
     }
   }
@@ -45,19 +41,19 @@ describe('NestJS Microservice integration', () => {
   @UseFilters(new ExceptionFilter())
   class AppController {
     @MessagePattern({ cmd: 'test_NoPipe' })
-    test_NoPipe(args: metatype) {
+    test_NoPipe(_args: metatype) {
       return 'OK';
     }
 
     @MessagePattern({ cmd: 'test_ConstructorInUsePipes' })
     @UsePipes(JoiPipe)
-    test_ConstructorInUsePipes(args: metatype) {
+    test_ConstructorInUsePipes(_args: metatype) {
       return 'OK';
     }
 
     @MessagePattern({ cmd: 'test_InstanceInUsePipes' })
     @UsePipes(new JoiPipe())
-    test_InstanceInUsePipes(args: metatype) {
+    test_InstanceInUsePipes(_args: metatype) {
       return 'OK';
     }
 
@@ -67,7 +63,7 @@ describe('NestJS Microservice integration', () => {
         group: 'create',
       }),
     )
-    test_InstanceInUsePipesWithGroup(args: metatype) {
+    test_InstanceInUsePipesWithGroup(_args: metatype) {
       return 'OK';
     }
   }
@@ -91,12 +87,18 @@ describe('NestJS Microservice integration', () => {
             {
               name: 'AppService',
               transport: Transport.TCP,
+              options: { port: 8765 },
             },
           ]),
         ],
       }).compile();
 
-      app = module.createNestMicroservice({});
+      app = module.createNestMicroservice({
+        transport: Transport.TCP,
+        options: {
+          port: 8765, // Use specific port
+        },
+      });
 
       await app.listen();
 
@@ -131,12 +133,18 @@ describe('NestJS Microservice integration', () => {
             {
               name: 'AppService',
               transport: Transport.TCP,
+              options: { port: 8765 },
             },
           ]),
         ],
       }).compile();
 
-      app = module.createNestMicroservice({});
+      app = module.createNestMicroservice({
+        transport: Transport.TCP,
+        options: {
+          port: 8765, // Use specific port
+        },
+      });
 
       await app.listen();
 
@@ -181,12 +189,18 @@ describe('NestJS Microservice integration', () => {
             {
               name: 'AppService',
               transport: Transport.TCP,
+              options: { port: 8765 },
             },
           ]),
         ],
       }).compile();
 
-      app = module.createNestMicroservice({});
+      app = module.createNestMicroservice({
+        transport: Transport.TCP,
+        options: {
+          port: 8765, // Use specific port
+        },
+      });
       app.useGlobalPipes(new JoiPipe());
 
       await app.listen();
@@ -222,12 +236,18 @@ describe('NestJS Microservice integration', () => {
             {
               name: 'AppService',
               transport: Transport.TCP,
+              options: { port: 8765 },
             },
           ]),
         ],
       }).compile();
 
-      app = module.createNestMicroservice({});
+      app = module.createNestMicroservice({
+        transport: Transport.TCP,
+        options: {
+          port: 8765, // Use specific port
+        },
+      });
       app.useGlobalPipes(
         new JoiPipe({
           group: 'create',
@@ -267,6 +287,7 @@ describe('NestJS Microservice integration', () => {
             {
               name: 'AppService',
               transport: Transport.TCP,
+              options: { port: 8765 },
             },
           ]),
         ],
@@ -278,7 +299,12 @@ describe('NestJS Microservice integration', () => {
         ],
       }).compile();
 
-      app = module.createNestMicroservice({});
+      app = module.createNestMicroservice({
+        transport: Transport.TCP,
+        options: {
+          port: 8765, // Use specific port
+        },
+      });
 
       await app.listen();
 
@@ -312,9 +338,9 @@ describe('NestJS Microservice integration', () => {
 
       it('should use the pipe correctly (negative test)', async () => {
         try {
-          const result = await client.send({ cmd }, { prop: 'duh' }).toPromise();
+          await client.send({ cmd }, { prop: 'invalid' }).toPromise();
           throw new Error('should not be thrown');
-        } catch (error) {
+        } catch (error: any) {
           expect(error).toEqual({
             error: `Request validation of body failed, because: "prop" must be [${propValue}]`,
             message: `Request validation of body failed, because: "prop" must be [${propValue}]`,

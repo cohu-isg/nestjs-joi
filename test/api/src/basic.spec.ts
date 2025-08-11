@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable unused-imports/no-unused-vars-ts */
-
 import * as Joi from 'joi';
 import { JoiSchema } from 'joi-class-decorators';
 import { fromPairs } from 'lodash';
@@ -38,7 +35,7 @@ describe('basic integration', () => {
           {
             prop: 1,
           },
-          { type: 'query' },
+          { type: '_query' as any },
         );
         throw new Error('should not be thrown');
       } catch (error) {
@@ -64,7 +61,7 @@ describe('basic integration', () => {
           {
             prop: '1',
           },
-          { type: 'query' },
+          { type: '_query' as any },
         );
       } catch (error_) {
         error = error_;
@@ -86,7 +83,7 @@ describe('basic integration', () => {
           {
             prop: 1,
           },
-          { type: 'query' },
+          { type: '_query' as any },
         );
         throw new Error('should not be thrown');
       } catch (error) {
@@ -115,7 +112,7 @@ describe('basic integration', () => {
           {
             prop: 1,
           },
-          { type: 'query', metatype },
+          { type: '_query' as any, metatype },
         );
         throw new Error('should not be thrown');
       } catch (error) {
@@ -131,7 +128,7 @@ describe('basic integration', () => {
   const CASES: {
     [name: string]: {
       fit?: boolean;
-      type: Class;
+      type: Class<any>;
       opts: { group?: string };
       payload: unknown;
       expectErrors: string[];
@@ -701,7 +698,7 @@ describe('basic integration', () => {
           let error_;
           try {
             pipe.transform(payload, {
-              type: 'query',
+              type: '_query' as any,
               metatype: mode === 'metatype' ? type : undefined,
             });
 
